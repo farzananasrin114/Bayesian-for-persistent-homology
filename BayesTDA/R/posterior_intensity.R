@@ -64,17 +64,16 @@
 #'    dy = lapply(1:nrow(circle.df),function(x){unlist(c(circle.df[x,][1],circle.df[x,][2]))}) ## creates the parameter Dy
 #'    
 #'    ## next we compute the posterior over the same grid
-#'    posterior = Posterior$new(prior = pri, Dy = dy, clutter = clut, sigma.y = sy, alpha = alpha)
+#'    posterior = Posterior_Intensity$new(prior = pri, Dy = dy, clutter = clut, sigma.y = sy, alpha = alpha)
 #'    values = seq(from = 0, to = 2, by = 0.05)
 #'    grid = expand.grid(values,values)
 #'    intens = apply(grid,1,posterior$evaluate)
 #'    intens = (1-alpha)*inf.dens + alpha*intens ## compute posterior intensity
-#'    post.df = data.frame(Birth = grid[,1],Persistence = grid[,2], Intensity = normalized_intens)
+#'    post.df = data.frame(Birth = grid[,1],Persistence = grid[,2], Intensity = intens)
 #'    
 #'    ##plot the posterior intensity
 #'    ## require(gplot2)
 #'    g.post = ggplot(data = post.df, aes(x = Birth, y = Persistence)) + geom_tile(aes(fill=Intensity)) + coord_equal()
-#'    g.post = g.post + scale_fill_gradient2(low = "blue", high = "red", mid = "yellow",midpoint = 0.5, limit = c(0,1))
 #'    g.post = g.post + geom_point(data = circle.df, aes(x = Birth, y= Persistence), pch = 19, cex=3, color = "Green")
 #'    g.post = g.post+ labs(title='Posterior',x='Birth',y='Persistence', fill = "") + theme_grey(base_size=14) +  theme(plot.title = element_text(hjust = 0.5))
 
