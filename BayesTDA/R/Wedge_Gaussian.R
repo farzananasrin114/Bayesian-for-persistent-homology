@@ -5,9 +5,10 @@
 #' @param mean: two element vector, mean of the restricted Gaussian
 #' @param sigma: positive constant, sigma in covariance matrix of the restricted Gaussian
 #' @details The function 'Wedge_Gaussian' computes Gaussian density restricted to wedge W. 
-#' For a death vs. birth persistence diagram wedge is defined as (b,d) such that d>b>0. For a tilted represetation, i.e., persistence vs. birth persistence diagram wedge is defined as T(b,d) = (b, d-b).
+#' For a death vs. birth persistence diagram wedge is defined as the two dimensional coordinate (b,d) such that d>b>0. 
+#' For a tilted represetation, i.e., persistence vs. birth persistence diagram wedge is defined as T(b,d) = (b, d-b).
 #' @return The function 'Wedge_Gaussian' returns numerical value of the  Gaussian density restricted to wedge W.
-#' @description The function 'Wedge_Gaussian' computes Gaussian density restricted to wedge W. Require 'mvtnorm'package multivariate normal pdf and cdf.
+#' @description The function 'Wedge_Gaussian' computes Gaussian density restricted to wedge W. Require 'mvtnorm' package for computing multivariate normal pdf and cdf.
 #' @examples # input the mean and constant sigma of covariance matrix
 #' w <- Wedge_Gaussian(mean = c(1,1), sigma = 0.001)
 #' w$evaluate(c(0.5,0.5))
