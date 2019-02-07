@@ -3,7 +3,7 @@
 #' Posterior intensity can be computed from a prior intensity and a set of observed persistence diagrams. 
 #' The inputs consists of two density functions estimated by using 'Wedge_Gaussian_Mixture' function: one is the prior intensity and another one is denoted as clutter.
 #' The prior density will be depending on the knowledge we have about the underlying truth. The observed PDs can exhibit two features.
-#' One which is believed to be associated to underlying truth and one is not anticipated by underlying truth or produce due to the noise. We call the later one surprise features.
+#' One which is believed to be associated to underlying truth and one is not anticipated by underlying truth or produce due to the noise. We call the later one clutter features.
 #' Usually these densities are considered to have mean near the birth axis as they can be formed due to noise.  
 #' @name postIntensityPoisson
 #' @usage postIntensityPoisson(prior, clutter, Dy, sigma.y, alpha)
