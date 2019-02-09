@@ -3,12 +3,12 @@
 #' @param x: two element vector. The posterior intensity is computed at x.
 #' @param Dy: list of two element vectors representing points observed in a persistence diagram. Here we consider a fixed homological feature.
 #' The coordinates (birth, death)/(birth, persistence) need to be a list of two element vectors. 
-#' @param alpha: The probablity of a feature in the prior will be detected in the observation.
+#' @param alpha: The probability of a feature in the prior will be detected in the observation.
 #' @param prob.prior: The prior cardinality is defined as a binomial and prob.prior is the probability term, i.e., prior cardinality ~ B(Nmax,prob.prior). 
 #' @param weight.prior: a list of mixture weights for the prior density object. This parameter will be an input for 'Wedge_Gaussian_Mixture' function to estimate prior density.
 #' @param mean.prior: a list of two element vector, means of the prior density object. This parameter will be an input for 'Wedge_Gaussian_Mixture' function to estimate prior density.
 #' @param sigma.prior: a list of positive constants, sigmas in covariance matrices of the prior density object. This parameter will be an input for 'Wedge_Gaussian_Mixture' function to estimate prior density.  
-#' @param sigma.Dyo: positive constant. variance coefficient of the likelihood density.This represents the degree of faith on the observed PDs representing the underlying truth.
+#' @param sigma.Dyo: positive constant. variance coefficient of the likelihood density. This represents the degree of faith on the observed PDs representing the underlying truth.
 #' @param prob.clutter: The clutter cardinality is defined as a binomial and prob.clutter is the probability term, i.e., clutter cardinality ~ B(Nmax,clutter). 
 #' @param weights.clutter: a list of mixture weights for the clutter density object. This parameter will be an input for 'Wedge_Gaussian_Mixture' function to estimate clutter density.
 #' @param mean.clutter: a list of two element vector, means of the clutter density object. This parameter will be an input for 'Wedge_Gaussian_Mixture' function to estimate clutter density.
