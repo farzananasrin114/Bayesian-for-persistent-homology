@@ -1,4 +1,4 @@
-#' Restricted Gaussian Mixure density
+#' Restricted Gaussian Mixture density
 #' @description Computes mixed Gaussian density restricted to wedge W. Require \code{mvtnorm} package.
 #' @usage Wedge_Gaussian_Mixture(x, weights, means, sigmas)
 #' @name Wedge_Gaussian_Mixture
@@ -16,31 +16,3 @@ Wedge_Gaussian_Mixture = function(x, weights, means, sigmas){
   return(sum(to_sum))
 }
 
-
-
-# Wedge_Gaussian_Mixture <- setRefClass('Wedge_Gaussian_Mixture',
-# 
-#                                       fields=list(weights='list',means='list',sigmas='list'),
-#                                       # weights: list of c_i
-#                                       # means: list of u_i
-#                                       # sigmas: list of sigma_i
-#                                       # matching parameters should be at same position in lists
-# 
-#                                       methods=list(
-#                                         initialize=function(weights=list(),means=list(),sigmas=list()){
-#                                           .self$weights=weights
-#                                           .self$means=means
-#                                           .self$sigmas=sigmas
-#                                         },
-# 
-#                                         evaluate = function(x){
-#                                           # x: two element numeric
-#                                           # returns value of wedge gaussian mixture density at x
-# 
-#                                           dens.list = mapply(function(u,s){Wedge_Gaussian$new(mean=u,sigma=s)},.self$means,.self$sigmas,SIMPLIFY = FALSE)
-#                                           dens.values = lapply(dens.list,function(y){y$evaluate(x)})
-#                                           prod = mapply(function(c,v){c*v},.self$weights,dens.values,SIMPLIFY=FALSE)
-#                                           return(Reduce('+',prod))
-#                                         }
-#                                       )
-# )
