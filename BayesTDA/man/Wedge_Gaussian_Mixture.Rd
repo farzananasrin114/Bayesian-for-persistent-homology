@@ -2,7 +2,7 @@
 % Please edit documentation in R/Wedge_Gaussian_Mixture.R
 \name{Wedge_Gaussian_Mixture}
 \alias{Wedge_Gaussian_Mixture}
-\title{Restricted Gaussian Mixure density}
+\title{Restricted Gaussian Mixture density}
 \usage{
 Wedge_Gaussian_Mixture(x, weights, means, sigmas)
 }
