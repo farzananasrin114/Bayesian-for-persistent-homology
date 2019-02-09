@@ -14,7 +14,7 @@ Gamma(Dy, alpha, prob.prior, weight.prior, mean.prior, sigma.prior,
 \item{Dy:}{list of two element vectors representing points observed in a persistence diagram. Here we consider a fixed homological feature.
 The coordinates (birth, death)/(birth, persistence) need to be a list of two element vectors.}
 
-\item{alpha:}{The probablity of a feature in the prior will be detected in the observation.}
+\item{alpha:}{The probability of a feature in the prior will be detected in the observation.}
 
 \item{prob.prior:}{The prior cardinality is defined as a binomial and prob.prior is the probability term, i.e., prior cardinality ~ B(Nmax,prob.prior).}
 
@@ -24,7 +24,7 @@ The coordinates (birth, death)/(birth, persistence) need to be a list of two ele
 
 \item{sigma.prior:}{a list of positive constants, sigmas in covariance matrices of the prior density object. This parameter will be an input for 'Wedge_Gaussian_Mixture' function to estimate prior density.}
 
-\item{sigma.Dyo:}{positive constant. variance coefficient of the likelihood density.This represents the degree of faith on the observed PDs representing the underlying truth.}
+\item{sigma.Dyo:}{positive constant. variance coefficient of the likelihood density. This represents the degree of faith on the observed PDs representing the underlying truth.}
 
 \item{prob.clutter:}{The clutter cardinality is defined as a binomial and prob.clutter is the probability term, i.e., clutter cardinality ~ B(Nmax,clutter).}
 
