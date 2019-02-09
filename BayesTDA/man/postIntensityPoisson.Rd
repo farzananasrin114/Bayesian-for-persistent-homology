@@ -24,12 +24,12 @@ The coordinates (birth, death)/(birth, persistence) need to be a list of two ele
 
 \item{sigma.clutter:}{a vector of positive constants, sigmas in covariance matrices of the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.}
 
-\item{sigma.y:}{positive constant. variance coefficient of the likelihood density.This represents the degree of faith on the observed PDs representing the underlying truth.}
+\item{sigma.y:}{positive constant. variance coefficient of the likelihood density. This represents the degree of faith on the observed PDs representing the underlying truth.}
 
 \item{alpha:}{The probablity of a feature in the prior will be detected in the observation.}
 }
 \value{
-The function \code{postIntensityPoisson} returns posterior intensity given prior and set of observed PDs using Bayesian framework, where PDs are characterized by poisson point process.
+The function \code{postIntensityPoisson} returns posterior intensity given prior and set of observed PDs using Bayesian framework, where PDs are characterized by Poisson point process.
 }
 \description{
 This function use the Bayesian inference obtained by characterizing persistence diagrams (PDs) as Poisson point process. 
@@ -68,7 +68,7 @@ inf.mean = list(c(0.5,1.2))
 inf.noise = 0.2
 inf.weight = 1
  
- ## next we define the likelihhod from the observed pds. Here we consider a dataset from the same unit circle that is perturbed by a gaussian noise.
+ ## next we define the likelihood from the observed pds. Here we consider a dataset from the same unit circle that is perturbed by a gaussian noise.
  
    sy = 0.1 #the variance of the likelihood density function
    circle.noise = 0.01 ## the variance coefficient of noise in this dataset 
