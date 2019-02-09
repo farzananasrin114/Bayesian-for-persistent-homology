@@ -1,0 +1,119 @@
+#' Posterior Intensity for persistence diagrams modeled as IID cluster Point Process
+#' @description This function use the Bayesian inference obtained by characterizing persistence diagrams (PDs) as IID cluster point process. 
+#' Posterior intensity can be computed from a prior distribution and a set of observed persistence diagrams. 
+#' The inputs consists of two intensity functions estimated by using \code{Wedge_Gaussian_Mixture} function: one is the prior intensity and another one is denoted as clutter.
+#' And two cardinality functions defined as Binomials.
+#' The prior distribution will be depending on the knowledge we have about the underlying truth. The observed PDs can exhibit two features.
+#' One which is believed to be associated to underlying truth and one is not anticipated by underlying truth or produce due to the noise. We call the later one clutter features.
+#' Usually these features are considered to occur near the birth axis as they can be formed due to noise.  
+#' @name postIntensityiid
+#' @usage postintensityiid(x,Dy,alpha,prob.prior,weight.prior,mean.prior,sigma.prior,sigma.Dyo,prob.clutter,weights.clutter,mean.clutter,sigma.clutter,Nmax)
+#' @param x: two element vector. The posterior intensity is computed at x.
+#' @param Dy: list of two element vectors representing points observed in a persistence diagram. Here we consider a fixed homological feature.
+#' The coordinates (birth, death)/(birth, persistence) need to be a list of two element vectors. 
+#' @param alpha: 0<=alpha<1. The probablity of a feature in the prior will be detected in the observation. 
+#' @param prob.prior: The prior cardinality is defined as a binomial and prob.prior is the probability term, i.e., prior cardinality ~ B(Nmax,prob.prior). 
+#' @param weight.prior: a list of mixture weights for the prior density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate prior density.
+#' @param mean.prior: a list of two element vector, means of the prior density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate prior density.
+#' @param sigma.prior: a list of positive constants, sigmas in covariance matrices of the prior density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate prior density.  
+#' @param sigma.Dyo: positive constant. variance coefficient of the likelihood density.This represents the degree of faith on the observed PDs representing the underlying truth.
+#' @param prob.clutter: The clutter cardinality is defined as a binomial and prob.clutter is the probability term, i.e., clutter cardinality ~ B(Nmax,clutter). 
+#' @param weights.clutter: a list of mixture weights for the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.
+#' @param mean.clutter: a list of two element vector, means of the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.
+#' @param sigma.clutter: a list of positive constants, sigmas in covariance matrices of the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.  
+#' @param Nmax: The maximum number of points at which the posterior cardinality will be truncated, i.e., {p_n} is computed for n=0 to n-Nmax. Also, this Nmax will be used to define prior and clutter cardinality. 
+#' So, it should be large enough so that all Binomials involved in the computation make sense
+#' @return The function \code{postIntensityiid} returns posterior intensity given prior and set of observed PDs using Bayesian framework, where PDs are characterized by IID cluster point process.
+#' @details Required packages are \code{mvtnorm}, \code{polynom}, \code{purrr} and \code{TDA}
+#' @references Bayesian Inference for Persistent Homology, V Maroulas, F Nasrin, C Oballe, \url{https://arxiv.org/abs/1901.02034}
+#' @example # sample data created from a unit circle to define prior
+#' t = seq(from=0, to = 1, by = 0.01)
+#' x = cos(2*pi*t)
+#' y = sin(2*pi*t)
+#' coord.mat = cbind(x,y)
+#' 
+#' # persistence diagram using ripsDiag of TDA package.  
+#' circle.samp = coord.mat[sample(1:nrow(coord.mat),50),]
+#' pd.circle = ripsDiag(circle.samp,maxscale=3,maxdimension = 1)
+#' circle.diag = matrix(pd.circle$diagram,ncol=3)
+#' circle.holes = matrix(circle.diag[which(circle.diag[,1]==1),],ncol=3)
+#' # this is required if we are working on a tilted wedge
+#' circle.tilted = cbind(circle.holes[,2],circle.holes[,3]-circle.holes[,2])
+#' circle.df = data.frame(Birth = circle.tilted[,1], Persistence = circle.tilted[,2]) ## create the dataframe consisting of pd coordinates.
+#' 
+#' # these parameters are required to define the object clutter
+#' clut.mean = list(c(0.5,0))
+#' clut.noise = 1
+#' clut.weight = 1
+#' clut.card = length(clut.mean)
+#' 
+#' # these parameters are required to define the object prior
+#' inf.mean = list(c(0.5,1.2))
+#' inf.noise = 0.2
+#' inf.weight = 1
+#' inf.card = length(inf.mean)
+#' ## next we define the likelihood from the observed pds. Here we consider a dataset from the same unit circle that is perturbed by a gaussian noise.
+#'  
+#'    circle.noise = 0.01 ## the variance coefficient of noise in this dataset 
+#'    noise = rmvnorm(nrow(coord.mat),mean = c(0,0), sigma = circle.noise*diag(2))
+#'    coord.mat = coord.mat + noise ## gives us the dataset which we will consider as observation
+#'    
+#'    ## following section creates observed PD
+#'    circle.samp = coord.mat[sample(1:nrow(coord.mat),50),]
+#'    pd.circle = ripsDiag(circle.samp,maxscale=3,maxdimension = 1)
+#'    circle.diag = matrix(pd.circle$diagram,ncol=3)
+#'    circle.holes = matrix(circle.diag[which(circle.diag[,1]==1),],ncol=3)
+#'    circle.tilted = cbind(circle.holes[,2],circle.holes[,3]-circle.holes[,2])
+#'    circle.df = data.frame(Birth = circle.tilted[,1], Persistence = circle.tilted[,2]) 
+#'    dy = lapply(1:nrow(circle.df),function(x){unlist(c(circle.df[x,][1],circle.df[x,][2]))}) ## creates the parameter Dy
+#'    
+#'    ## next we compute the posterior over a grid
+#'    values = seq(from = 0, to = 2, by = 0.05)
+#'    grid = expand.grid(values,values)
+#'    alpha = 0.99
+#'    Nmax = 7
+#'    prob_dys = clut.card/Nmax
+#'    sig_Dyo = 0.01
+#'    prob_Dx = inf.card/Nmax
+#'    
+#'    intens.inf = apply(grid,1,postintensityiid,dy,alpha,prob_Dx,inf.weight,
+#'    inf.mean,inf.noise,sig_Dyo,prob_dys,clut.weight,clut.mean,clut.noise,Nmax)
+#'    
+#'    ## max_intens.inf = max(intens.inf)
+#'    normalized_intens.inf = intens.inf/max_intens.inf
+#'    post.df = data.frame(Birth = grid[,1],Persistence = grid[,2], Intensity = normalized_intens.inf)
+#'    g.post.inf = ggplot(data = post.df, aes(x = Birth, y = Persistence)) + geom_tile(aes(fill=Intensity)) + coord_equal()+
+#'    scale_fill_gradient2(low = "blue", high = "red", mid = "yellow",midpoint = 0.5, limit = c(0,1))+
+#'    geom_point(data = circle.df, aes(x = Birth, y= Persistence), size=2, color = "Green")+
+#'    labs(title='Posterior Using Inf.',x='Birth',y='Persistence', fill = "") + theme_grey(base_size=16) +  theme(plot.title = element_text(hjust = 0.5))+
+#'    guides(fill = "none")
+#'    print(g.post.inf)
+#' @export
+
+postintensityiid = function(x,Dy,alpha,prob.prior,weight.prior,mean.prior,sigma.prior,sigma.Dyo,prob.clutter,weights.clutter,mean.clutter,sigma.clutter,Nmax){
+  
+  if( alpha ==  1)
+    stop('alpha can not be 1')
+  else
+    
+  first_term = (1-alpha)*Wedge_Gaussian_Mixture(x,weight.prior,mean.prior,sigma.prior)*
+    Gamma(Dy,alpha,prob.prior,weight.prior,mean.prior,sigma.prior,sigma.Dyo,prob.clutter,weights.clutter,mean.clutter,sigma.clutter,Nmax,1)*
+    (1/Gamma(Dy,alpha,prob.prior,weight.prior,mean.prior,sigma.prior,sigma.Dyo,prob.clutter,weights.clutter,mean.clutter,sigma.clutter,Nmax,0))
+  qy = lapply(Dy,function(y){mapply(function(mu,sig1,sig2){dmvnorm(y,mean=mu,
+                                                                   sigma=(sig1+sig2)*diag(2))},mean.prior,sigma.prior,MoreArgs = list(sig2 = sigma.Dyo))}) 
+  K = length(Dy) 
+  to_sum = matrix(0,nrow = K,length(weight.prior)) 
+  for(j in 1:K){
+    for(i in 1:length(weight.prior)){
+      to_sum[j,i]=Gamma(Dy[-j],alpha,prob.prior,weight.prior,mean.prior,sigma.prior,sigma.Dyo,prob.clutter,weights.clutter,mean.clutter,sigma.clutter,Nmax,1)*
+        alpha*qy[[j]][i]*weight.prior[i]*(1/Wedge_Gaussian_Mixture(Dy[[j]],weights = weights.clutter,means = mean.clutter,sigmas = sigma.clutter))*
+        (1/Gamma(Dy,alpha,prob.prior,weight.prior,mean.prior,sigma.prior,sigma.Dyo,prob.clutter,weights.clutter,mean.clutter,sigma.clutter,Nmax,0))*
+        dmvnorm(x,mean = (sigma.prior[i]*Dy[[j]]+sigma.Dyo*mean.prior[[i]])/(sigma.prior[[i]]+sigma.Dyo),
+                sigma = (sigma.Dyo*sigma.prior[[i]]/(sigma.prior[[i]]+sigma.Dyo))*diag(2))
+    }
+  }
+  return(first_term+sum(to_sum))
+}
+
+
+
