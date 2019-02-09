@@ -16,9 +16,9 @@
 #' @param weights.clutter: a vector of mixture weights for the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.
 #' @param mean.clutter: a list of two element vector, means of the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.
 #' @param sigma.clutter: a vector of positive constants, sigmas in covariance matrices of the clutter density object. This parameter will be an input for \code{Wedge_Gaussian_Mixture} function to estimate clutter density.  
-#' @param sigma.y: positive constant. variance coefficient of the likelihood density.This represents the degree of faith on the observed PDs representing the underlying truth.
+#' @param sigma.y: positive constant. variance coefficient of the likelihood density. This represents the degree of faith on the observed PDs representing the underlying truth.
 #' @param alpha: The probablity of a feature in the prior will be detected in the observation.
-#' @return The function \code{postIntensityPoisson} returns posterior intensity given prior and set of observed PDs using Bayesian framework, where PDs are characterized by poisson point process.
+#' @return The function \code{postIntensityPoisson} returns posterior intensity given prior and set of observed PDs using Bayesian framework, where PDs are characterized by Poisson point process.
 #' @details Required packages are \code{TDA} and \code{mvtnorm}.
 #' @references Bayesian Inference for Persistent Homology, V Maroulas, F Nasrin, C Oballe, \url{https://arxiv.org/abs/1901.02034}
 
@@ -47,7 +47,7 @@
 #' inf.noise = 0.2
 #' inf.weight = 1
 #'  
-#'  ## next we define the likelihhod from the observed pds. Here we consider a dataset from the same unit circle that is perturbed by a gaussian noise.
+#'  ## next we define the likelihood from the observed pds. Here we consider a dataset from the same unit circle that is perturbed by a gaussian noise.
 #'  
 #'    sy = 0.1 #the variance of the likelihood density function
 #'    circle.noise = 0.01 ## the variance coefficient of noise in this dataset 
