@@ -12,7 +12,7 @@ Wedge_Gaussian(z, mean, sigma)
 
 \item{mean:}{two element vector, mean of the restricted Gaussian}
 
-\item{sigma:}{positive constant. Covariance matrix of the restricted Gaussian has the form sigma*I_2, where I_2 is the 2x2 indentity matrix.}
+\item{sigma:}{positive constant. Covariance matrix of the restricted Gaussian has the form sigma*I_2, where I_2 is the 2x2 identity matrix.}
 }
 \value{
 The function \code{Wedge_Gaussian} returns numerical value of the  Gaussian density restricted to wedge W.
@@ -23,7 +23,7 @@ The function \code{Wedge_Gaussian} computes Gaussian density restricted to wedge
 \details{
 The function \code{Wedge_Gaussian} computes Gaussian density restricted to wedge W. 
 For a death vs. birth persistence diagram wedge is defined as the two dimensional coordinate (b,d) such that d>b>0. 
-For a tilted represetation, i.e., persistence vs. birth persistence diagram wedge is defined as T(b,d) = (b, d-b).
+For a tilted representation, i.e., persistence vs. birth persistence diagram wedge is defined as T(b,d) = (b, d-b).
 }
 \examples{
 # input the mean and constant sigma of covariance matrix
