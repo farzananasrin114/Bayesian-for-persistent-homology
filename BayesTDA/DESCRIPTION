@@ -2,10 +2,8 @@ Package: BayesTDA
 Type: Package
 Title: Bayesian inference for persistence diagrams
 Version: 0.1.0
-Author: Farzana Nasrin [aut, cre],
-  Christopher Oballe [aut],
-  Cassie Putman [aut]
-  Vasileios Maroulas [cbt]
+Author: Farzana Nasrin [aut, cre], Christopher Oballe [aut],
+  Cassie Putman [aut], Vasileios Maroulas [cbt]
 Maintainer: Farzana Nasrin <fnasrin@utk.edu>
 Description: Estimate the posterior distribution utilzing Bayesian inference for persistence diagrams
 License: GPL-2
