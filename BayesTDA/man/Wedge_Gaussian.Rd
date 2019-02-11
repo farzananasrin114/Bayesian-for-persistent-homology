@@ -2,8 +2,7 @@
 % Please edit documentation in R/Wedge_Gaussian.R
 \name{Wedge_Gaussian}
 \alias{Wedge_Gaussian}
-\title{Restricted Gaussian density
-The function \code{Wedge_Gaussian} computes Gaussian density restricted to wedge W.}
+\title{Restricted Gaussian density}
 \usage{
 Wedge_Gaussian(z, mean, sigma)
 }
