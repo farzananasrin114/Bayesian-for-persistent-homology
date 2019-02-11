@@ -82,8 +82,8 @@ postIntensityPoisson = function(x,Dy,alpha,weight.prior,mean.prior,sigma.prior,s
   first_term = (1-alpha)*Wedge_Gaussian_Mixture(x,weight.prior,mean.prior,sigma.prior)
   qy = lapply(Dy,function(y){mapply(function(mu,sig1,sig2){dmvnorm(y,mean=mu,
                                                                    sigma=(sig1+sig2)*diag(2))},mean.prior,sigma.prior,MoreArgs = list(sig2 = sigma.y))}) 
-  
-  w = mapply(function(q,fDys){t(weight.prior)%*%q},qy)
+  f_Dys = unlist(lapply(Dy,Wedge_Gaussian_Mixture,weights = weights.clutter,means = mean.clutter,sigmas = sigma.clutter))
+  w = mapply(function(q,fDys){t(weight.prior)%*%q*(fDys+t(weight.prior)%*%q)},qy,f_Dys)
   
   tilde_c = function(means,sigmas){pmvnorm(lower = c(0,0),upper = c(Inf,Inf),mean=means,
                                            sigma=sigmas*diag(2))}
@@ -94,8 +94,7 @@ postIntensityPoisson = function(x,Dy,alpha,weight.prior,mean.prior,sigma.prior,s
   to_sum = matrix(0,nrow = K,length(weight.prior)) 
   for(j in 1:K){
     for(i in 1:length(weight.prior)){
-      to_sum[j,i]=w[[j]][i]* (1/(f_Dys[[j]]+alpha*sum(t(w)*Q)))*
-        dmvnorm(x,mean = (sigma.prior[i]*Dy[[j]]+sigma.y*mean.prior[[i]])/(sigma.prior[[i]]+sigma.y),
+      to_sum[j,i]=w[[j]]*dmvnorm(x,mean = (sigma.prior[i]*Dy[[j]]+sigma.y*mean.prior[[i]])/(sigma.prior[[i]]+sigma.y),
                 sigma = (sigma.y*sigma.prior[[i]]/(sigma.prior[[i]]+sigma.y))*diag(2))
     }
   }
